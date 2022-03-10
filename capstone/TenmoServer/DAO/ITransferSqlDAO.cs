@@ -6,7 +6,7 @@ using TenmoServer.Models;
 
 namespace TenmoServer.DAO
 {
-    public class ITransferSqlDAO
+    public interface ITransferSqlDAO
     {
         Transfer GetTransfer(int transferId);
 

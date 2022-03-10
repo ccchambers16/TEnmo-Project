@@ -56,6 +56,8 @@ namespace TenmoServer
             services.AddSingleton<IPasswordHasher>(sp => new PasswordHasher());
             services.AddTransient<IUserDao>(sp => new UserSqlDao(connectionString));
             services.AddTransient<IAccountSqlDao>(sp => new AccountSqlDao(connectionString));
+            services.AddTransient<ITransferSqlDao>(sp => new TransferSqlDao(connectionString));
+
             //connectionString is being passed in here, done up top 
             //need to add any dependency injections here.
             //any service that needs an instance is added here. 
