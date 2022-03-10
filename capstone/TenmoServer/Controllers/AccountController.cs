@@ -15,7 +15,8 @@ namespace TenmoServer.Controllers
     {
         private readonly IAccountSqlDao accountSqlDao;
 
-        public AccountController(IAccountSqlDao accountSqlDao)
+        public AccountController(IAccountSqlDao accountSqlDao)  //nothing to create an instance here.
+            //remember: leverage dependency injection here.  
         {
             this.accountSqlDao = accountSqlDao;
         }
