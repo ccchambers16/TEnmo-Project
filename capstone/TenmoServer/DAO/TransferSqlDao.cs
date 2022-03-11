@@ -95,18 +95,15 @@ namespace TenmoServer.DAO
                     cmd.ExecuteNonQuery();
 
                     cmd = new SqlCommand("SELECT @@IDENTITY", conn);
-                    int userId = Convert.ToInt32(cmd.ExecuteScalar());
-                    //We need to double check: add the new transferId to the passed in Transfer Object.
-                    //And then we return the complete object with the new transferId to the client:
-                    //"Here's your completed transfer, with new transferId.  
+                    int transferId = Convert.ToInt32(cmd.ExecuteScalar());
+                    transferToSql = GetTransfer(transferId);
 
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    //Method to get the transfer id back and then add it to the object. 
-
-                    if (reader.Read())
-                    {
-                        transferToSql = GetTransferFromReader(reader);
-                    }
+                    cmd = new SqlCommand("UPDATE account SET balance = (balance + '@amount') WHERE account_id = @accountTo; " +
+                        "UPDATE account SET balance = (balance - '@amount') WHERE account_id = accountFrom;", conn);
+                    cmd.Parameters.AddWithValue("@accountFrom", transferToSql.FromAccountId);
+                    cmd.Parameters.AddWithValue("@accountTo", transferToSql.ToAccountId);
+                    cmd.Parameters.AddWithValue("@amount", transferToSql.TransferAmount);
+                    cmd.ExecuteNonQuery(); 
                 }
             }
 
@@ -115,7 +112,7 @@ namespace TenmoServer.DAO
                 throw;
             }
 
-            return transfer;
+            return transferToSql;
         }
 
 

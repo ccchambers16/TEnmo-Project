@@ -11,7 +11,8 @@ namespace TenmoServer.DAO
         Transfer GetTransfer(int transferId);
 
         List<Transfer> GetAllTransfers(int accountId);
-        Transfer SendTransfer(int userId, int TouserId, double TransferAmount);
+
+        Transfer SendTransfer(Transfer transferToSql);
 
     }
 }
