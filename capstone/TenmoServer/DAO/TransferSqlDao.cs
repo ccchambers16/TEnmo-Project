@@ -87,8 +87,8 @@ namespace TenmoServer.DAO
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand(
-                        "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount" +
-                        "VALUES (2, 2, @accountFrom, @accountTo, @amount;", conn);
+                        "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount)" +
+                        "VALUES (2, 2, @accountFrom, @accountTo, @amount);", conn);
                     cmd.Parameters.AddWithValue("@accountFrom", transferToSql.FromAccountId);
                     cmd.Parameters.AddWithValue("@accountTo", transferToSql.ToAccountId);
                     cmd.Parameters.AddWithValue("@amount", transferToSql.TransferAmount);

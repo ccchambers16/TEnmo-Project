@@ -8,7 +8,7 @@ namespace TenmoServer.Models
 {
     public class Transfer
     {
-        [Range(3000, double.PositiveInfinity, ErrorMessage = "The field `TransferId` must not be negative.")]
+        //[Range(3000, double.PositiveInfinity, ErrorMessage = "The field `TransferId` must not be negative.")]
         public int TransferId { get; set; }
 
         [Range(1, 2, ErrorMessage = "The field `TransferTypeId` must not be negative.")]
