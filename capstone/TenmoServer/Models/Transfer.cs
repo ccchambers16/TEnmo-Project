@@ -22,7 +22,8 @@ namespace TenmoServer.Models
         [Range(2000, double.PositiveInfinity, ErrorMessage = "The field 'ToAccountId' must be a valid id.")]
         public int ToAccountId { get; set; }
 
-        [Range(0.00, double.PositiveInfinity, ErrorMessage = "The field 'TransferAmount' must not be negative.")]
+        //[Range(0.01, decimal.MaxValue, ErrorMessage = "The field 'TransferAmount' must not be negative.")]  //can't be greater than account balance
+        [Range(0.01, (double)decimal.MaxValue, ErrorMessage = "The field 'TransferAmount' must not be negative.")]
         public decimal TransferAmount { get; set; }
 
     }

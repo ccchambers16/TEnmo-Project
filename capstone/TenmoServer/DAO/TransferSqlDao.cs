@@ -28,8 +28,8 @@ namespace TenmoServer.DAO
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand(
-                        "SELECT * FROM transfer WHERE transfer_id = @transferID", conn);
-                    cmd.Parameters.AddWithValue("@transfer_id", transferId);
+                        "SELECT * FROM transfer WHERE transfer_id = @transferId", conn);
+                    cmd.Parameters.AddWithValue("@transferId", transferId);
                     SqlDataReader reader = cmd.ExecuteReader();
 
 
@@ -82,24 +82,26 @@ namespace TenmoServer.DAO
             
             try
             {
+                int transferId;
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand(
-                        "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount)" +
+                        "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) OUTPUT INSERTED.transfer_id " +
                         "VALUES (2, 2, @accountFrom, @accountTo, @amount);", conn);
                     cmd.Parameters.AddWithValue("@accountFrom", transferToSql.FromAccountId);
                     cmd.Parameters.AddWithValue("@accountTo", transferToSql.ToAccountId);
                     cmd.Parameters.AddWithValue("@amount", transferToSql.TransferAmount);
-                    cmd.ExecuteNonQuery();
-
-                    cmd = new SqlCommand("SELECT @@IDENTITY", conn);
-                    int transferId = Convert.ToInt32(cmd.ExecuteScalar());
+                    transferId = Convert.ToInt32(cmd.ExecuteScalar());
+                    
+                    //cmd.ExecuteNonQuery();
+                    //cmd = new SqlCommand("SELECT @@IDENTITY", conn);
+                    //int transferId = Convert.ToInt32(cmd.ExecuteScalar());
                     transferToSql = GetTransfer(transferId);
 
-                    cmd = new SqlCommand("UPDATE account SET balance = (balance + '@amount') WHERE account_id = @accountTo; " +
-                        "UPDATE account SET balance = (balance - '@amount') WHERE account_id = accountFrom;", conn);
+                    cmd = new SqlCommand("UPDATE account SET balance = (balance + @amount) WHERE account_id = @accountTo; " +
+                        "UPDATE account SET balance = (balance - @amount) WHERE account_id = @accountFrom;", conn);
                     cmd.Parameters.AddWithValue("@accountFrom", transferToSql.FromAccountId);
                     cmd.Parameters.AddWithValue("@accountTo", transferToSql.ToAccountId);
                     cmd.Parameters.AddWithValue("@amount", transferToSql.TransferAmount);

@@ -53,7 +53,7 @@ namespace TenmoServer.Controllers
         }
 
         [HttpPost()]
-        public ActionResult<Transfer> AddTransfer(Transfer transfer)
+        public ActionResult<Transfer> SendTransfer(Transfer transfer)
         {
             Transfer added = transferSqlDao.SendTransfer(transfer);
             return Created($"/transfers/{added.TransferId}", added);
