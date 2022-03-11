@@ -6,11 +6,11 @@ using TenmoServer.Models;
 
 namespace TenmoServer.DAO
 {
-    public interface ITransferSqlDAO
+    public interface ITransferSqlDao
     {
         Transfer GetTransfer(int transferId);
 
-        List<Transfer> GetAllTransfers(int userId);
+        List<Transfer> GetAllTransfers(int accountId);
         Transfer SendTransfer(int userId, int TouserId, double TransferAmount);
 
     }
