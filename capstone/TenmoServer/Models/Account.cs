@@ -8,7 +8,7 @@ namespace TenmoServer.Models
 {
     public class Account
     {
-        //public int Id { get; set; }
+        public int AccountId { get; set; }
         //there was no auto-incrementing function in the SQL lecture files.  
 
         [Range(1000, double.PositiveInfinity, ErrorMessage = "The field 'UserId' must be a valid id.")]

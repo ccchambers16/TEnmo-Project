@@ -77,7 +77,6 @@ namespace TenmoClient
             if (menuSelection == 1)
             {
                 ShowAccount();
-
                 // View your current balance
             }
 
@@ -166,6 +165,33 @@ namespace TenmoClient
             }
             console.Pause();
         }
+
+
+        private void ShowAccount()
+        {
+            Console.WriteLine($"Welcome to your account.");
+            Console.WriteLine($"Your account id is:  {tenmoApiService.UserId}.");
+            console.PrintCurrentBalance(tenmoApiService.UserId);
+            Console.WriteLine($"----------------------------------------------");
+            console.Pause();
+        }
+
+        private void ShowTransfer()
+        {
+            //Add application-specific UI methods in TenmoConsoleService.cs
+        }
+
+        private void ShowAllTransfers()
+        {
+            //Add application-specific UI methods in TenmoConsoleService.cs
+        }
+
+        private void ShowSendTransfers()
+        {
+            //Add application-specific UI methods in TenmoConsoleService.cs
+        }
+
+
         //private void ShowAccount()
         //{
         //    try
@@ -174,7 +200,7 @@ namespace TenmoClient
         //        if (accounts != null)
         //        {
         //            int accountId = console.PromptForAccountId(accounts);
-                    
+
         //               Console.WriteLine($"you current account balance is $: {balance}");
         //        }
         //    }

@@ -29,9 +29,9 @@ namespace TenmoServer.DAO
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand(
-                        "SELECT account.user_id, username, balance FROM account " +
+                        "SELECT account_id, account.user_id, username, balance FROM account " +
                         "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
-                        "WHERE account.account_id = @accountId;", conn); 
+                        "WHERE account_id = @accountId;", conn); 
                     //"SELECT user_id, balance FROM account " +
                       //  "WHERE account_id = @accountId; ", conn);
                     cmd.Parameters.AddWithValue("@accountId", accountId);
@@ -65,7 +65,7 @@ namespace TenmoServer.DAO
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand(
-                         "SELECT account.user_id, username, balance FROM account " +
+                         "SELECT account_id, account.user_id, username, balance FROM account " +
                         "JOIN tenmo_user ON account.user_id = tenmo_user.user_id ", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -88,6 +88,7 @@ namespace TenmoServer.DAO
         {
             Account a = new Account()
             {
+                AccountId = Convert.ToInt32(reader["account_id"]),
                 UserId = Convert.ToInt32(reader["user_id"]),
                 Balance= Convert.ToDouble(reader["balance"]),
                 Username= Convert.ToString(reader["username"])

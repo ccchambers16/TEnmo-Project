@@ -6,6 +6,8 @@ namespace TenmoClient.Services
 {
     public class TenmoConsoleService : ConsoleService
     {
+        private readonly TenmoApiService tenmoApiService; //work on
+        private readonly TenmoConsoleService console = new TenmoConsoleService();
         /************************************************************
             Print methods
         ************************************************************/
@@ -51,8 +53,102 @@ namespace TenmoClient.Services
             return loginUser;
         }
 
-        // Add application-specific UI methods here...
+        //PrintCurrentBalance [1]
+        public void PrintCurrentBalance(int userId) 
+        {
+            Account accountToPrint = null;
+            List<Account> accounts = tenmoApiService.GetAllAccounts();
+            foreach(Account account in accounts)
+            {
+                if(userId == account.UserId)
+                {
+                    accountToPrint = account;
+                }
+            }
+            Console.WriteLine("--------------------------------------------");
+            Console.WriteLine($"Your current acount balance is: {accountToPrint.Balance}.");
+        }
 
+        //PrintPastTransfers [2]
+        public void PrintAllTransfers(List<Transfer> transfers) 
+        {
+            Console.WriteLine("Here are the details of all past transfers:");
+            foreach (Transfer transfer in transfers)
+            {
+                Console.WriteLine("--------------------------------------------");
+                Console.WriteLine(" Id: " + transfer.TransferId);
+                Console.WriteLine(" From: " + AccountIdToUserName(transfer.FromAccountId));
+                Console.WriteLine(" To: " + AccountIdToUserName(transfer.ToAccountId));
+                Console.WriteLine(" Type: " + TransferTypeIdToName(transfer.TransferTypeId));
+                Console.WriteLine(" Status: " + TransferStatusIdToName(transfer.TransferStatusId));
+                Console.WriteLine(" Amount: $" + transfer.TransferAmount);
+            }
+        }
 
-    }
+        //PrintPendingTransfers [3] ... basically ALL transfers the way we set it up
+        public Transfer PrintPendingTransfers()
+        {
+            return null;
+        }
+
+        //PrintSendTransfer [4]
+        public void PrintTransfer(int transferId)
+        {
+            Transfer transfer = tenmoApiService.GetTransfer(transferId);
+
+            Console.WriteLine($"Here are the details for transfer Id: {transferId}");
+            Console.WriteLine("--------------------------------------------");
+            Console.WriteLine(" Id: " + transfer.TransferId);
+            Console.WriteLine(" From: " + AccountIdToUserName(transfer.FromAccountId));
+            Console.WriteLine(" To: " + AccountIdToUserName(transfer.ToAccountId));
+            Console.WriteLine(" Type: " + TransferTypeIdToName(transfer.TransferTypeId));
+            Console.WriteLine(" Status: " + TransferStatusIdToName(transfer.TransferStatusId));
+            Console.WriteLine(" Amount: $" + transfer.TransferAmount);
+
+        }
+
+        public string TransferTypeIdToName(int id)
+        {
+            string message = null;
+
+            if(id == 1)
+            {
+                message = "Request";
+            }
+            else if(id == 2)
+            {
+                message = "Send";
+            }
+            return message;
+        }
+
+        public string TransferStatusIdToName(int id)
+        {
+            string message = null;
+
+            if (id == 1)
+            {
+                message = "Pending";
+            }
+            else if (id == 2)
+            {
+                message = "Approved";
+            }
+            else if (id == 3)
+            {
+                message = "Rejected";
+            }
+            return message;
+        }
+
+        public string AccountIdToUserName(int id)
+        {
+            Account account = null;
+            string userName = null;
+            account = tenmoApiService.GetAccount(id);
+            userName = account.Username;
+            return userName;
+        }
+
+        }
 }
