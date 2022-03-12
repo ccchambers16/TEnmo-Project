@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using TenmoClient.Models;
 using TenmoClient.Services;
 
+
 namespace TenmoClient
 {
     public class TenmoApp
     {
-        private readonly TenmoConsoleService console = new TenmoConsoleService();
         private readonly TenmoApiService tenmoApiService;
-
+        private readonly TenmoConsoleService console = new TenmoConsoleService();
+        
+        
         public TenmoApp(string apiUrl)
         {
             tenmoApiService = new TenmoApiService(apiUrl);
+            
         }
 
         public void Run()
@@ -73,21 +76,26 @@ namespace TenmoClient
 
             if (menuSelection == 1)
             {
+                ShowAccount();
+
                 // View your current balance
             }
 
             if (menuSelection == 2)
             {
+                ShowTransfer();
                 // View your past transfers
             }
 
             if (menuSelection == 3)
             {
+                ShowAllTransfers();
                 // View your pending requests
             }
 
             if (menuSelection == 4)
             {
+                ShowSendTransfers();
                 // Send TE bucks
             }
 
@@ -158,5 +166,23 @@ namespace TenmoClient
             }
             console.Pause();
         }
+        //private void ShowAccount()
+        //{
+        //    try
+        //    {//////IslogedIn///////
+        //        List<Account> accounts = tenmoApiService.GetAccount();
+        //        if (accounts != null)
+        //        {
+        //            int accountId = console.PromptForAccountId(accounts);
+                    
+        //               Console.WriteLine($"you current account balance is $: {balance}");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        console.PrintError(ex.Message);
+        //    }
+        //    console.Pause();
+        //}
     }
 }
