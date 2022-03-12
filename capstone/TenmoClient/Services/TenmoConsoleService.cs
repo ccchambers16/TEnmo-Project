@@ -7,7 +7,7 @@ namespace TenmoClient.Services
     public class TenmoConsoleService : ConsoleService
     {
         private readonly TenmoApiService tenmoApiService; //work on
-        private readonly TenmoConsoleService console = new TenmoConsoleService();
+       // private readonly TenmoConsoleService console = new TenmoConsoleService();
         /************************************************************
             Print methods
         ************************************************************/
@@ -28,9 +28,9 @@ namespace TenmoClient.Services
             Console.WriteLine("");
             Console.WriteLine($"Hello, {username}!");
             Console.WriteLine("1: View your current balance");
-            Console.WriteLine("2: View your past transfers");
+            Console.WriteLine("2: Send TE bucks");
             Console.WriteLine("3: View your pending requests");
-            Console.WriteLine("4: Send TE bucks");
+            Console.WriteLine("4: View your past transfers"); 
             Console.WriteLine("5: Request TE bucks");
             Console.WriteLine("6: Log out");
             Console.WriteLine("0: Exit");
@@ -54,13 +54,13 @@ namespace TenmoClient.Services
         }
 
         //PrintCurrentBalance [1]
-        public void PrintCurrentBalance(int userId) 
+        public void PrintCurrentBalance(int userId)
         {
             Account accountToPrint = null;
             List<Account> accounts = tenmoApiService.GetAllAccounts();
-            foreach(Account account in accounts)
+            foreach (Account account in accounts)
             {
-                if(userId == account.UserId)
+                if (userId == account.UserId)
                 {
                     accountToPrint = account;
                 }
@@ -70,7 +70,7 @@ namespace TenmoClient.Services
         }
 
         //PrintPastTransfers [2]
-        public void PrintAllTransfers(List<Transfer> transfers) 
+        public void PrintAllTransfers(List<Transfer> transfers)
         {
             Console.WriteLine("Here are the details of all past transfers:");
             foreach (Transfer transfer in transfers)
@@ -107,15 +107,24 @@ namespace TenmoClient.Services
 
         }
 
+        public void PrintListOfUserIdAndUsername()
+        {
+            List<Account> accounts = tenmoApiService.GetAllAccounts();
+            Console.WriteLine("   Id | Username");
+            Console.WriteLine("---------------------");
+            foreach (Account account in accounts)
+            { Console.WriteLine($" {account.UserId} | {account.Username}"); }
+        }
+
         public string TransferTypeIdToName(int id)
         {
             string message = null;
 
-            if(id == 1)
+            if (id == 1)
             {
                 message = "Request";
             }
-            else if(id == 2)
+            else if (id == 2)
             {
                 message = "Send";
             }
@@ -150,5 +159,19 @@ namespace TenmoClient.Services
             return userName;
         }
 
+        public int UserIdToAccountId(int userId)
+        {
+            int accountId = 0; 
+            Account accountToFind = null;
+            List<Account> accounts = tenmoApiService.GetAllAccounts();
+            foreach (Account account in accounts)
+            {
+                if (userId == account.UserId)
+                {
+                    accountId = accountToFind.AccountId;
+                }
+            }
+            return accountId; 
         }
+    }    
 }
