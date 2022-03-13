@@ -19,6 +19,8 @@ namespace TenmoClient.Models
             ToAccountId = toAccountId;
             TransferAmount = transferAmount;
         }
+
+        public Transfer() { }
     }
 
 }

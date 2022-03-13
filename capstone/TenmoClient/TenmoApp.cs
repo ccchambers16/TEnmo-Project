@@ -179,27 +179,30 @@ namespace TenmoClient
 
         private void ShowTransfer()
         {
-           Transfer transfer = null;
-           transfer.FromAccountId = UserIdToAccountId(tenmoApiService2.UserId);
-
+            int fromAccountId = UserIdToAccountId(tenmoApiService2.UserId);
+            
             Console.WriteLine($"Please follow the directions below to complete a transfer of Tenmo buck$.");
             Console.WriteLine("Select a user to send money to:");
-            console2.PrintListOfUserIdAndUsername();
+            List<Account> accounts = tenmoApiService2. GetAllAccounts();
+            console2.PrintListOfUserIdAndUsername(accounts);
 
             string message = "Enter userId of receipient of transfer: ";
             int ToUserId = console2.PromptForInteger(message, 1000, int.MaxValue);
-            transfer.ToAccountId = UserIdToAccountId(ToUserId);
+            int toAccountId = UserIdToAccountId(ToUserId);
 
             string messageAmount = "Enter the amount of money you would like to send:";
             decimal defaultValue = 0;
             decimal transferAmount = console2.PromptForDecimal(messageAmount, defaultValue);
+            decimal transferAmountAccepted = 0; 
 
             if (transferAmount > 0)
             {
-                transfer.TransferAmount = transferAmount;
+                transferAmountAccepted = transferAmount;
             }
+            else { return; }
 
-            Transfer completedTransfer = tenmoApiService2.AddTransfer(transfer);
+            Transfer transferToMake = new Transfer(fromAccountId, toAccountId, transferAmountAccepted);
+            Transfer completedTransfer = tenmoApiService2.AddTransfer(transferToMake);
 
             Console.WriteLine("Transfer completed!");
             console2.PrintTransfer(completedTransfer.TransferId);

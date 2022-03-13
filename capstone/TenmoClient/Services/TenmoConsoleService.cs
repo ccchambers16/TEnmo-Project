@@ -106,9 +106,9 @@ namespace TenmoClient.Services
 
         }
 
-        public void PrintListOfUserIdAndUsername()
+        public void PrintListOfUserIdAndUsername(List<Account> accounts)
         {
-            List<Account> accounts = tenmoApiService.GetAllAccounts();
+            
             Console.WriteLine("   Id | Username");
             Console.WriteLine("---------------------");
             foreach (Account account in accounts)
