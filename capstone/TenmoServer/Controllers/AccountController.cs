@@ -10,7 +10,7 @@ namespace TenmoServer.Controllers
 {
     [Route("accounts")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     //will need to change the authorizationn
 
     public class AccountController : ControllerBase 

@@ -18,6 +18,7 @@ namespace TenmoClient.Models
             Username = username;
             Balance = balance;
         }
+        public Account() { }
 
         public bool IsValid
         {

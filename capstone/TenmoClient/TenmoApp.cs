@@ -170,16 +170,17 @@ namespace TenmoClient
         private void ShowAccount()
         {
             Console.WriteLine($"Welcome to your account.");
-            Console.WriteLine($"Your account id is:  {tenmoApiService2.UserId}.");
-            console2.PrintCurrentBalance(tenmoApiService2.UserId);
-            Console.WriteLine($"----------------------------------------------");
+            Console.WriteLine($"Your user id is:  {tenmoApiService2.UserId}.");
+
+            Account accountToPrint= tenmoApiService2.GetAccount(tenmoApiService2.UserId);
+            console2.PrintCurrentBalance(accountToPrint, accountToPrint.UserId);
             console2.Pause();
         }
 
         private void ShowTransfer()
         {
-            Transfer transfer = null;
-            transfer.FromAccountId = console2.UserIdToAccountId(tenmoApiService2.UserId);
+           Transfer transfer = null;
+           transfer.FromAccountId = UserIdToAccountId(tenmoApiService2.UserId);
 
             Console.WriteLine($"Please follow the directions below to complete a transfer of Tenmo buck$.");
             Console.WriteLine("Select a user to send money to:");
@@ -187,7 +188,7 @@ namespace TenmoClient
 
             string message = "Enter userId of receipient of transfer: ";
             int ToUserId = console2.PromptForInteger(message, 1000, int.MaxValue);
-            transfer.ToAccountId = console2.UserIdToAccountId(ToUserId);
+            transfer.ToAccountId = UserIdToAccountId(ToUserId);
 
             string messageAmount = "Enter the amount of money you would like to send:";
             decimal defaultValue = 0;
@@ -222,13 +223,27 @@ namespace TenmoClient
         {
             Console.WriteLine("Check out all the money you've sent to your Tenmo buddies.");
 
-            int accountId= console2.UserIdToAccountId(tenmoApiService2.UserId);
+            int accountId= UserIdToAccountId(tenmoApiService2.UserId);
             List<Transfer> transfers = tenmoApiService2.GetAllTransfers(accountId);
             console2.PrintAllTransfers(transfers);
             console2.Pause(); 
         }
 
+        public int UserIdToAccountId(int userId)
+        {
+            int accountId = 0;
+            List<Account> accounts = tenmoApiService2.GetAllAccounts();
+            foreach (Account account in accounts)
+            {
+                if (userId == account.UserId)
+                {
+                    accountId = account.AccountId;
+                }
+            }
+            return accountId;
+        }
 
-        
+
+
     }
 }

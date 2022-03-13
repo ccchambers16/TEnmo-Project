@@ -61,19 +61,11 @@ namespace TenmoClient.Services
         }
 
         //PrintCurrentBalance [1]
-        public void PrintCurrentBalance(int userId)
+        public void PrintCurrentBalance(Account account, int userId)
         {
-            Account accountToPrint = null;
-            List<Account> accounts = tenmoApiService.GetAllAccounts();
-            foreach (Account account in accounts)
-            {
-                if (userId == account.UserId)
-                {
-                    accountToPrint = account;
-                }
-            }
+            
             Console.WriteLine("--------------------------------------------");
-            Console.WriteLine($"Your current acount balance is: {accountToPrint.Balance}.");
+            Console.WriteLine($"Your current acount balance is: {account.Balance}.");
         }
 
         //PrintPastTransfers [2]
@@ -166,19 +158,6 @@ namespace TenmoClient.Services
             return userName;
         }
 
-        public int UserIdToAccountId(int userId)
-        {
-            int accountId = 0; 
-            Account accountToFind = null;
-            List<Account> accounts = tenmoApiService.GetAllAccounts();
-            foreach (Account account in accounts)
-            {
-                if (userId == account.UserId)
-                {
-                    accountId = accountToFind.AccountId;
-                }
-            }
-            return accountId; 
-        }
+        
     }    
 }

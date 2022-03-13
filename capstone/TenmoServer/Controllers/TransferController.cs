@@ -9,7 +9,7 @@ namespace TenmoServer.Controllers
 {
     [Route("transfers")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     //will need to change the authorizationn
 
     public class TransferController : ControllerBase
