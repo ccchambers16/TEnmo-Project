@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using TenmoClient.Models;
+using TenmoClient.Services; 
 
 namespace TenmoClient.Services
 {
     public class TenmoConsoleService : ConsoleService
     {
-        private readonly TenmoApiService tenmoApiService; //work on
-       // private readonly TenmoConsoleService console = new TenmoConsoleService();
+        private TenmoApiService tenmoApiService;
+
+        // private readonly AuthenticatedApiService authenticatedApiService;
+        
+
+
+
+
         /************************************************************
             Print methods
         ************************************************************/

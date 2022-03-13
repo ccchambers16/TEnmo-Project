@@ -8,13 +8,13 @@ namespace TenmoClient
 {
     public class TenmoApp
     {
-        private readonly TenmoApiService tenmoApiService;
+        private readonly TenmoApiService tenmoApiService2;
         private readonly TenmoConsoleService console2 = new TenmoConsoleService();
 
 
         public TenmoApp(string apiUrl)
         {
-            tenmoApiService = new TenmoApiService(apiUrl);
+            tenmoApiService2 = new TenmoApiService(apiUrl);
 
         }
 
@@ -24,7 +24,7 @@ namespace TenmoClient
             while (keepGoing)
             {
                 // The menu changes depending on whether the user is logged in or not
-                if (tenmoApiService.IsLoggedIn)
+                if (tenmoApiService2.IsLoggedIn)
                 {
                     keepGoing = RunAuthenticated();
                 }
@@ -66,7 +66,7 @@ namespace TenmoClient
 
         private bool RunAuthenticated()
         {
-            console2.PrintMainMenu(tenmoApiService.Username);
+            console2.PrintMainMenu(tenmoApiService2.Username);
             int menuSelection = console2.PromptForInteger("Please choose an option", 0, 6);
             if (menuSelection == 0)
             {
@@ -106,7 +106,7 @@ namespace TenmoClient
             if (menuSelection == 6)
             {
                 // Log out
-                tenmoApiService.Logout();
+                tenmoApiService2.Logout();
                 console2.PrintSuccess("You are now logged out");
             }
 
@@ -123,7 +123,7 @@ namespace TenmoClient
 
             try
             {
-                ApiUser user = tenmoApiService.Login(loginUser);
+                ApiUser user = tenmoApiService2.Login(loginUser);
                 if (user == null)
                 {
                     console2.PrintError("Login failed.");
@@ -149,7 +149,7 @@ namespace TenmoClient
             }
             try
             {
-                bool isRegistered = tenmoApiService.Register(registerUser);
+                bool isRegistered = tenmoApiService2.Register(registerUser);
                 if (isRegistered)
                 {
                     console2.PrintSuccess("Registration was successful. Please log in.");
@@ -170,8 +170,8 @@ namespace TenmoClient
         private void ShowAccount()
         {
             Console.WriteLine($"Welcome to your account.");
-            Console.WriteLine($"Your account id is:  {tenmoApiService.UserId}.");
-            console2.PrintCurrentBalance(tenmoApiService.UserId);
+            Console.WriteLine($"Your account id is:  {tenmoApiService2.UserId}.");
+            console2.PrintCurrentBalance(tenmoApiService2.UserId);
             Console.WriteLine($"----------------------------------------------");
             console2.Pause();
         }
@@ -179,7 +179,7 @@ namespace TenmoClient
         private void ShowTransfer()
         {
             Transfer transfer = null;
-            transfer.FromAccountId = console2.UserIdToAccountId(tenmoApiService.UserId);
+            transfer.FromAccountId = console2.UserIdToAccountId(tenmoApiService2.UserId);
 
             Console.WriteLine($"Please follow the directions below to complete a transfer of Tenmo buck$.");
             Console.WriteLine("Select a user to send money to:");
@@ -198,7 +198,7 @@ namespace TenmoClient
                 transfer.TransferAmount = transferAmount;
             }
 
-            Transfer completedTransfer = tenmoApiService.AddTransfer(transfer);
+            Transfer completedTransfer = tenmoApiService2.AddTransfer(transfer);
 
             Console.WriteLine("Transfer completed!");
             console2.PrintTransfer(completedTransfer.TransferId);
@@ -222,8 +222,8 @@ namespace TenmoClient
         {
             Console.WriteLine("Check out all the money you've sent to your Tenmo buddies.");
 
-            int accountId= console2.UserIdToAccountId(tenmoApiService.UserId);
-            List<Transfer> transfers = tenmoApiService.GetAllTransfers(accountId);
+            int accountId= console2.UserIdToAccountId(tenmoApiService2.UserId);
+            List<Transfer> transfers = tenmoApiService2.GetAllTransfers(accountId);
             console2.PrintAllTransfers(transfers);
             console2.Pause(); 
         }
